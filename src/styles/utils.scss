@@ -1,0 +1,6 @@
+$ideal-viewport-width: 1920;
+$current-viewport-width: 100vw;
+
+@function scale-value($size) {
+  @return calc(#{$size} * (#{$current-viewport-width} / #{$ideal-viewport-width}));
+}

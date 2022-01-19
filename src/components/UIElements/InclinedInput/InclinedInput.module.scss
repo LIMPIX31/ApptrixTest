@@ -1,0 +1,82 @@
+.wrapper {
+  height: 42px;
+  background-color: #8000ff;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, .2);
+  transform: skewX(-25deg);
+  border-radius: 5px;
+  position: relative;
+  box-sizing: border-box;
+
+  transition: all .3s;
+
+  &:focus-within {
+    background-color: #ff148a;
+  }
+
+  .filler {
+    position: absolute;
+    top: calc(50% - .5px);
+    right: -1px;
+    width: calc(100% - 5px);
+    height: calc(100% + 2px);
+    transform: translateY(-50%);
+    background-color: #111111;
+  }
+
+  .input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Free4F, sans-serif;
+    transform: skewX(25deg);
+    font-size: 22px;
+    color: white;
+    padding: 0 20px;
+    border-radius: 5px;
+    z-index: 1;
+    text-align: left;
+
+    &::placeholder {
+      color: #444444;
+    }
+  }
+
+  .errMessage {
+    position: absolute;
+    bottom: -25px;
+    left: 5px;
+    font-family: Free4F, sans-serif;
+    font-size: 18px;
+    color: #ff003a;
+    transform: skewX(25deg);
+    user-select: none;
+    transition: all .3s;
+  }
+
+  .hideErr{
+    opacity: 0;
+    transform: skewX(25deg) translateY(-30px);
+  }
+
+}
+
+.disabled {
+  background-color: #3b3b3b;
+
+  .input {
+    opacity: .5;
+    user-select: none;
+  }
+}
+
+
+.error {
+  background-color: #ff003a;
+  border: 3px solid #ff003a;
+
+  &:focus-within {
+    background-color: #ff003a !important;
+  }
+}

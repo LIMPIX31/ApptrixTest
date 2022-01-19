@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import { Home } from './pages/Home/Home'
+import { Login } from './pages/Login/Login'
+import { AppContainer } from './app/IoC/container'
+import { ApptrixApi } from './app/abstracts/interfaces/ApptrixApi.interface'
+import { TYPES } from './app/IoC/types'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export const App: React.FC = () => {
+
+  useEffect(() => {
+    const apptrixApi = AppContainer.get<ApptrixApi>(TYPES.ApptrixApi)
+    apptrixApi.check()
+  }, [])
+
+  return <Routes>
+    <Route path={'/'} element={<Home />} />
+    <Route path={'/login'} element={<Login />} />
+  </Routes>
 }
-
-export default App;
