@@ -14,7 +14,7 @@ export class RESTAPI implements IRESTAPI {
   private readonly baseURL: string
   private readonly refreshEndpoint: string
 
-  constructor(baseURL: string, refreshEndpoint: string) {
+  constructor(baseURL: string, refreshEndpoint: string = '') {
     this.baseURL = baseURL
     this.refreshEndpoint = refreshEndpoint
     this.axios = axios.create({
