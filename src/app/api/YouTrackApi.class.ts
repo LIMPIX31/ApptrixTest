@@ -2,7 +2,7 @@ import { YouTrackApi as IYouTrackApi } from '../abstracts/interfaces/YouTrackApi
 import { action, computed, makeObservable, observable } from 'mobx'
 import { injectable } from 'inversify'
 import { RESTAPI } from './RESTAPI.class'
-import { YouTrackIssue, YouTrackUser } from '../abstracts/types/YouTrackApi.types'
+import { YouTrackIssue, YouTrackUser, YouTrackWorkItem } from '../abstracts/types/YouTrackApi.types'
 import { YouTrackApiException } from '../exceptions/YouTrackApi.exception'
 import { APIRequestException } from '../exceptions/APIRequest.exception'
 import { AxiosError } from 'axios'
@@ -24,6 +24,7 @@ export class YouTrackApi extends RESTAPI implements IYouTrackApi {
   }
 
   @observable private _issues: YouTrackIssue[] = []
+  @observable private _workitems: YouTrackWorkItem[] = []
 
   @computed
   get issues() {
@@ -58,4 +59,19 @@ export class YouTrackApi extends RESTAPI implements IYouTrackApi {
     return this._issues.filter(issue => issue.project.name.match(new RegExp(`^${partialProjectName}`)) !== null)
   }
 
+  @action
+  async fetchWorkItems(){
+    try {
+      const res = await this.instance.get<YouTrackWorkItem[]>('workItems?fields=author(fullName),duration(minutes),issue(id)')
+      if (res.data) {
+        this._workitems = res.data
+      }
+    } catch (e) {
+      throw new YouTrackApiException(new APIRequestException(e as AxiosError))
+    }
+  }
+
+  getWorkitemsFromIssue(issueid: string): YouTrackWorkItem[] {
+    return this._workitems.filter(workitem => workitem.issue.id === issueid)
+  }
 }

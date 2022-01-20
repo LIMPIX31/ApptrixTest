@@ -1,23 +1,22 @@
-@import "../../../styles/vars";
+@import "../../styles/vars";
 
-.issues {
-
+.timeSheetPage {
+  width: 100%;
+  min-height: 100%;
+  background: $primary-gradient;
+  background-attachment: fixed;
+  padding: 50px;
   display: flex;
-  margin: 30px auto;
-  width: 1000px;
-
-
-  .filter {
-    width: 100%;
-  }
-
-  .issuesTable {
+  justify-content: center;
+  align-items: center;
+  .timeSheetTable {
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, .2);
     border-radius: 20px;
     overflow: hidden;
     margin-top: 20px;
+    width: 1000px;
 
     .header {
       background: $primary-gradient-reversed;
@@ -25,26 +24,18 @@
 
     .row {
       display: flex;
+      //flex: 1;
       align-items: center;
       transition: all .3s;
       min-height: 50px;
       .item {
         &:nth-child(1) {
-          width: 100px;
+          width: 250px;
         }
 
         &:nth-child(2) {
           width: 200px;
         }
-
-        &:nth-child(3) {
-          width: 450px;
-        }
-
-        &:nth-child(4) {
-          width: 200px;
-        }
-
 
         //width: 150px;
         background-color: $primary-flatten-gradient;

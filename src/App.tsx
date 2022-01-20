@@ -5,6 +5,7 @@ import { Login } from './pages/Login/Login'
 import { AppContainer } from './app/IoC/container'
 import { ApptrixApi } from './app/abstracts/interfaces/ApptrixApi.interface'
 import { TYPES } from './app/IoC/types'
+import { Timesheet } from './pages/Timesheet/Timesheet'
 
 export const App: React.FC = () => {
 
@@ -16,5 +17,6 @@ export const App: React.FC = () => {
   return <Routes>
     <Route path={'/'} element={<Home />} />
     <Route path={'/login'} element={<Login />} />
+    <Route path={'/timesheet/:issueid'} element={<Timesheet />} />
   </Routes>
 }

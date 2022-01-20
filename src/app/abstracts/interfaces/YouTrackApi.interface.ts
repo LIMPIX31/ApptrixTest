@@ -1,4 +1,4 @@
-import { YouTrackIssue, YouTrackUser } from '../types/YouTrackApi.types'
+import { YouTrackIssue, YouTrackUser, YouTrackWorkItem } from '../types/YouTrackApi.types'
 
 export interface YouTrackApi {
   /**
@@ -26,4 +26,15 @@ export interface YouTrackApi {
    * @param partialProjectName
    */
   findIssuesByProject(partialProjectName: string): YouTrackIssue[]
+
+  /**
+   * Обновить список временных записей
+   */
+  fetchWorkItems(): void
+
+  /**
+   * Получить временные записи по id задачи
+   * @param issue
+   */
+  getWorkitemsFromIssue(issueid: string): YouTrackWorkItem[]
 }

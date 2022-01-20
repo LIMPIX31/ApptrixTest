@@ -15,3 +15,15 @@ export type YouTrackIssue = {
   id: string,
   $type: string
 }
+
+export type YouTrackWorkItem = {
+  issue:{
+    id: string
+  },
+  duration:{
+    minutes: number
+  },
+  author: {
+    fullName: string
+  }
+}
