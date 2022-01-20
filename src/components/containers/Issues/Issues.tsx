@@ -2,25 +2,25 @@ import { InclinedInput } from '../../UIElements/InclinedInput/InclinedInput'
 import React, { useEffect, useState } from 'react'
 
 import s from './Issues.module.scss'
-import { AppContainer } from '../../../app/IoC/container'
-import { ApptrixApi } from '../../../app/abstracts/interfaces/ApptrixApi.interface'
-import { TYPES } from '../../../app/IoC/types'
+import { useStore } from '../../../app/IoC/container'
 import { YouTrackApi } from '../../../app/abstracts/interfaces/YouTrackApi.interface'
 import cn from 'classnames'
 import { observer } from 'mobx-react'
 import { InclinedButton } from '../../UIElements/InclinedButton/InclinedButton'
 import { useNavigate } from 'react-router-dom'
 
-export const Issues = () => {
+export const Issues = observer(() => {
+  const { ApptrixApi, YouTrackApi } = useStore()
 
-  const apptrixApi = AppContainer.get<ApptrixApi>(TYPES.ApptrixApi)
-  const ytrApi = AppContainer.get<YouTrackApi>(TYPES.YouTrackApi)
+  const apptrixApi = ApptrixApi
+  const ytrApi = YouTrackApi
 
   useEffect(() => {
     if (apptrixApi.isLogged) {
       ytrApi.fetchIssues()
+      ytrApi.fetchWorkItems()
     }
-  }, [apptrixApi, ytrApi])
+  }, [apptrixApi.isLogged])
 
   const [filter, setFilter] = useState('')
 
@@ -39,11 +39,13 @@ export const Issues = () => {
       </div>
     </div>
   </div>
-}
+})
 
 export const IssuesTable = observer(({ ytrApi, filter }: { ytrApi: YouTrackApi, filter: string }) => {
 
   const nav = useNavigate()
+
+  const tshAvailable = (id: string) => ytrApi.getWorkitemsFromIssue(id).length !== 0
 
   return <>
     {ytrApi.findIssuesByProject(filter).map(issue => (
@@ -52,7 +54,8 @@ export const IssuesTable = observer(({ ytrApi, filter }: { ytrApi: YouTrackApi, 
         <div className={s.item}>{issue.project.name}</div>
         <div className={s.item}>{issue.summary}</div>
         <div className={s.item}>
-          <InclinedButton label={'Timesheet'} onClick={() => nav(`/timesheet/${issue.id}`, { replace: true })} />
+          <InclinedButton label={tshAvailable(issue.id) ? 'Timesheet' : 'Not available'} disabled={!tshAvailable(issue.id)}
+                          onClick={() => nav(`/timesheet/${issue.id}`, { replace: true })} />
         </div>
       </div>
     ))}

@@ -13,7 +13,7 @@ export class ApptrixApi extends RESTAPI implements IApptrixApi {
   @observable private _logged: boolean = false
 
   constructor() {
-    super('http://erp.apptrix.ru/api/', 'token/refresh/')
+    super('http://erp.apptrix.ru/api/', 'token/refresh/', false)
     makeObservable(this)
   }
 
@@ -36,6 +36,7 @@ export class ApptrixApi extends RESTAPI implements IApptrixApi {
       if (res.data && res.data.access) {
         this._logged = true
         this.token = res.data.access
+        if (!this.cookieMode) this.refreshToken = res.data.refresh
       }
     } catch (e) {
       this._error = new APIRequestException(e as AxiosError)
@@ -44,8 +45,20 @@ export class ApptrixApi extends RESTAPI implements IApptrixApi {
   }
 
   @action
-  async check() {
-    if (await this.refresh()) this._logged = true
+  async check():Promise<boolean> {
+    if (await this.refresh()) {
+      this._logged = true
+      return true
+    }else{
+      return false
+    }
+  }
+
+  @action
+  logout(){
+    this._logged = false
+    this.clearToken()
+    this.clearRefreshToken()
   }
 
 }

@@ -14,7 +14,7 @@ export class RESTAPI implements IRESTAPI {
   private readonly baseURL: string
   private readonly refreshEndpoint: string
 
-  constructor(baseURL: string, refreshEndpoint: string = '') {
+  constructor(baseURL: string, refreshEndpoint: string = '', private _cookieMode: boolean = true, private refreshKey: string = 'refresh') {
     this.baseURL = baseURL
     this.refreshEndpoint = refreshEndpoint
     this.axios = axios.create({
@@ -65,34 +65,67 @@ export class RESTAPI implements IRESTAPI {
     localStorage.setItem(this.accessTokenKey, token)
   }
 
+  set refreshToken(refreshToken: string) {
+    localStorage.setItem(this.refreshTokenKey, refreshToken)
+  }
+
   get accessTokenKey(): string {
     return `accessToken[${btoa(this.baseURL)}]`
+  }
+
+  get refreshTokenKey(): string {
+    return `refreshToken[${btoa(this.baseURL)}]`
   }
 
   get instance() {
     return this.axios
   }
 
+  get cookieMode() {
+    return this._cookieMode
+  }
+
   async refresh() {
-    const data = await this.axios
-      .post(
-        `${this.baseURL}${this.refreshEndpoint}`,
-        {
-          withCredentials: true,
-          timeout: 5000,
-        },
-      )
-      .then(res => res.data)
-    if (data) {
-      localStorage.setItem(this.accessTokenKey, data.access)
-      return true
-    } else {
+    try {
+      console.log(localStorage.getItem(this.refreshTokenKey))
+      const data = !this._cookieMode ? await axios
+          .post(
+            `${this.baseURL}${this.refreshEndpoint}`,
+            {
+              [this.refreshKey]: localStorage.getItem(this.refreshTokenKey),
+            },
+            {
+              withCredentials: true,
+              timeout: 5000,
+            },
+          ) :
+        await this.axios
+          .get(
+            `${this.baseURL}${this.refreshEndpoint}`,
+            {
+              withCredentials: true,
+              timeout: 5000,
+            },
+          )
+      if (data) {
+        localStorage.setItem(this.accessTokenKey, data.data.access)
+        if (!this._cookieMode && data.data.refresh) localStorage.setItem(this.refreshTokenKey, data.data.refresh)
+        return true
+      } else {
+        return false
+      }
+    } catch (e) {
+      console.log((e as AxiosError)?.response?.data)
       return false
     }
   }
 
   clearToken() {
     localStorage.removeItem(this.accessTokenKey)
+  }
+
+  clearRefreshToken(): void {
+    localStorage.removeItem(this.refreshTokenKey)
   }
 
 }

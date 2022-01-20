@@ -17,6 +17,11 @@ export interface RESTAPI {
   clearToken(): void
 
   /**
+   * Удалить refresh токен из хранилища
+   */
+  clearRefreshToken(): void
+
+  /**
    * Установить токен в хранилище
    * @param token
    */
@@ -26,5 +31,16 @@ export interface RESTAPI {
    * Получить экземпляр axios
    */
   get instance(): AxiosInstance
+
+  /**
+   * Установить refresh токен
+   * @param refreshToken
+   */
+  set refreshToken(refreshToken: string)
+
+  /**
+   * Работает ли JWT авторизация в режиме, в котором refreshToken Находится в cookie, как впринципе и должно быть, но в Apptrix это почему-то не так
+   */
+  get cookieMode(): boolean
 
 }

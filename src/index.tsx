@@ -7,14 +7,14 @@ import './styles/global.css'
 // import fonts
 import './styles/fonts.css'
 import { BrowserRouter } from 'react-router-dom'
-import { AppContainer } from './app/IoC/container'
-import { ApptrixApi } from './app/abstracts/interfaces/ApptrixApi.interface'
-import { TYPES } from './app/IoC/types'
+import { createStore, StoreContext } from './app/IoC/container'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <StoreContext.Provider value={createStore()}>
+        <App />
+      </StoreContext.Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'),

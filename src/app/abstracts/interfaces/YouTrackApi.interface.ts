@@ -9,7 +9,7 @@ export interface YouTrackApi {
   /**
    * Обновить список пользователей
    */
-  fetchUsers(): void
+  fetchUsers(): Promise<void>
 
   /**
    * Получить список задач
@@ -19,7 +19,7 @@ export interface YouTrackApi {
   /**
    * Обновить список задач
    */
-  fetchIssues(): void
+  fetchIssues(): Promise<void>
 
   /**
    * Найти задачи по названию проекта (нужно для автокомплита)
@@ -30,11 +30,11 @@ export interface YouTrackApi {
   /**
    * Обновить список временных записей
    */
-  fetchWorkItems(): void
+  fetchWorkItems(): Promise<void>
 
   /**
    * Получить временные записи по id задачи
-   * @param issue
+   * @param issueid
    */
   getWorkitemsFromIssue(issueid: string): YouTrackWorkItem[]
 }

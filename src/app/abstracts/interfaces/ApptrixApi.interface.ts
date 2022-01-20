@@ -21,6 +21,10 @@ export interface ApptrixApi {
   /**
    * Отправить запрос на обновление токенов и в случае успеха авторизовать пользователя
    */
-  check(): void
+  check(): boolean | Promise<boolean>
 
+  /**
+   * Выйти из аккаунта
+   */
+  logout(): void
 }

@@ -1,17 +1,16 @@
 import s from './Users.module.scss'
 import cn from 'classnames'
 import React, { useEffect, useState } from 'react'
-import { AppContainer } from '../../../app/IoC/container'
-import { ApptrixApi } from '../../../app/abstracts/interfaces/ApptrixApi.interface'
-import { TYPES } from '../../../app/IoC/types'
+import { useStore } from '../../../app/IoC/container'
 import { YouTrackApi } from '../../../app/abstracts/interfaces/YouTrackApi.interface'
 import { YouTrackUser } from '../../../app/abstracts/types/YouTrackApi.types'
 import { observer } from 'mobx-react'
 
-export const Users = () => {
+export const Users = observer(() => {
+  const { ApptrixApi, YouTrackApi } = useStore()
 
-  const apptrixApi = AppContainer.get<ApptrixApi>(TYPES.ApptrixApi)
-  const ytrApi = AppContainer.get<YouTrackApi>(TYPES.YouTrackApi)
+  const apptrixApi = ApptrixApi
+  const ytrApi = YouTrackApi
 
   const [selectedUser, setSelectedUser] = useState<YouTrackUser>()
 
@@ -19,7 +18,7 @@ export const Users = () => {
     if (apptrixApi.isLogged) {
       ytrApi.fetchUsers()
     }
-  }, [apptrixApi, ytrApi])
+  }, [apptrixApi.isLogged])
 
   return <>
     <div className={s.usersTable}>
@@ -39,7 +38,7 @@ export const Users = () => {
       <PV name={'Type'} value={selectedUser?.$type} />
     </div>
   </>
-}
+})
 
 const UsersTable = observer(({
                                ytrApi,

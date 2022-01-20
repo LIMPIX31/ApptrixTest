@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
 import s from './Timesheet.module.scss'
-import { AppContainer } from '../../app/IoC/container'
-import { TYPES } from '../../app/IoC/types'
+import { useStore } from '../../app/IoC/container'
 import { useParams } from 'react-router-dom'
 import { YouTrackApi } from '../../app/abstracts/interfaces/YouTrackApi.interface'
-import { ApptrixApi } from '../../app/abstracts/interfaces/ApptrixApi.interface'
 import { useAuthRedirect } from '../../hooks/useAuthRedirect'
 import cn from 'classnames'
 import { observer } from 'mobx-react'
@@ -12,20 +10,21 @@ import { Document, Page, PDFDownloadLink } from '@react-pdf/renderer'
 import { InclinedButton } from '../../components/UIElements/InclinedButton/InclinedButton'
 import { DataTableCell, Table, TableBody, TableCell, TableHeader } from '@david.kucsai/react-pdf-table'
 
-export const Timesheet: React.FC = () => {
-
+export const Timesheet = observer(() => {
   const { issueid } = useParams()
 
   useAuthRedirect()
 
-  const apptrixApi = AppContainer.get<ApptrixApi>(TYPES.ApptrixApi)
-  const ytrApi = AppContainer.get<YouTrackApi>(TYPES.YouTrackApi)
+  const { ApptrixApi, YouTrackApi } = useStore()
+
+  const apptrixApi = ApptrixApi
+  const ytrApi = YouTrackApi
 
   useEffect(() => {
     if (apptrixApi.isLogged) {
       ytrApi.fetchWorkItems()
     }
-  }, [apptrixApi, ytrApi])
+  }, [apptrixApi.isLogged])
 
   return <div className={s.timeSheetPage}>
     <div className={s.timeSheetTable}>
@@ -41,7 +40,7 @@ export const Timesheet: React.FC = () => {
         <InclinedButton disabled label={'Exporting...'} /> : <InclinedButton label={'Export to PDF'} />)}
     </PDFDownloadLink>
   </div>
-}
+})
 
 
 export const WorkItems = observer(({ ytrApi, issueid }: { ytrApi: YouTrackApi, issueid: string }) => {
