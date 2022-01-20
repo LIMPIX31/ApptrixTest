@@ -1,0 +1,54 @@
+@import "../../../styles/vars";
+
+.issues {
+
+  display: flex;
+  margin: 30px auto;
+  width: 1000px;
+
+
+  .filter {
+    width: 100%;
+  }
+
+  .issuesTable {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, .2);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 20px;
+
+    .header {
+      background: $primary-gradient-reversed;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      transition: all .3s;
+      min-height: 50px;
+      .item {
+        width: 100%;
+        &:first-child {
+          width: 80px;
+        }
+
+        &:nth-child(4) {
+          width: 300px;
+        }
+
+        //width: 150px;
+        background-color: $primary-flatten-gradient;
+        padding: 10px 20px;
+        font-family: Rubik, sans-serif;
+        color: white;
+      }
+
+      &:nth-child(2n) {
+        background-color: #2a2a2a;
+      }
+
+    }
+  }
+}

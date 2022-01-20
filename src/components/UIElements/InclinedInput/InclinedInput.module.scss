@@ -13,6 +13,18 @@
     background-color: #ff148a;
   }
 
+  .placeholder{
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%) skewX(25deg);
+    color: #444444;
+    font-family: Free4F, sans-serif;
+    font-size: 22px;
+    z-index: 0;
+    line-height: 1.2em;
+  }
+
   .filler {
     position: absolute;
     top: calc(50% - .5px);
@@ -21,6 +33,7 @@
     height: calc(100% + 2px);
     transform: translateY(-50%);
     background-color: #111111;
+
   }
 
   .input {

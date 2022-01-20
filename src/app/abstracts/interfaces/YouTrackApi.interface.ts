@@ -1,4 +1,4 @@
-import { YouTrackUser } from '../types/YouTrackApi.types'
+import { YouTrackIssue, YouTrackUser } from '../types/YouTrackApi.types'
 
 export interface YouTrackApi {
   /**
@@ -10,4 +10,20 @@ export interface YouTrackApi {
    * Обновить список пользователей
    */
   fetchUsers(): void
+
+  /**
+   * Получить список задач
+   */
+  get issues(): YouTrackIssue[]
+
+  /**
+   * Обновить список задач
+   */
+  fetchIssues(): void
+
+  /**
+   * Найти задачи по названию проекта (нужно для автокомплита)
+   * @param partialProjectName
+   */
+  findIssuesByProject(partialProjectName: string): YouTrackIssue[]
 }

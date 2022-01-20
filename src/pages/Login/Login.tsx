@@ -66,11 +66,11 @@ export const Form: React.FC = () => {
             {api.error.data.detail || api.error.reqMessage}
           </div>
         </div>}
-        <InclinedInput name={'username'} className={s.formInput} type={'login'} value={values.username}
+        <InclinedInput formik name={'username'} className={s.formInput} type={'login'} value={values.username}
                        placeholder={'Логин'}
                        errors={errors} touched={touched} disabled={isSubmitting} onChange={handleChange}
                        onBlur={handleBlur} />
-        <InclinedInput name={'password'} className={s.formInput} type={'password'} value={values.password}
+        <InclinedInput formik name={'password'} className={s.formInput} type={'password'} value={values.password}
                        placeholder={'Пароль'}
                        errors={errors} touched={touched} disabled={isSubmitting} onChange={handleChange}
                        onBlur={handleBlur} />
